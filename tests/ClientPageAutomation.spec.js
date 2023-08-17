@@ -2,7 +2,7 @@ const { expect,test } = require("@playwright/test");
 
 test.only('new page automate',async ({page}) =>{
 // await page.goto("https://rahulshettyacademy.com/"); 
-// var a=await page.getByAltText('Learn Postman for API Automation Testing with Javascript').first().click();
+// var a=await page.getByAltText('Learn Postman for API Automation sting with Javascript').first().click();
 
 await page.goto("https://rahulshettyacademy.com/client/");
 await page.locator('a.btn1').click();
