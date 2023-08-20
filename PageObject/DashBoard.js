@@ -23,6 +23,7 @@ for(let b=0;b<titles.length;b++)
 }
 //select cart
 await this.page.locator('.btn-custom .fa-shopping-cart').click();
+await this.page.locator('.cartWrap .ng-star-inserted').waitFor();
 }
 }
 module.exports={DashBoard};

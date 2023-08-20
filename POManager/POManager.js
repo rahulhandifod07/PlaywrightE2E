@@ -7,6 +7,7 @@ constructor(page)
 {
 this.page=page;
 this.Loginpage=new LoginPage(page);
+
 }
 
 getLoginPage()
