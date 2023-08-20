@@ -19,6 +19,7 @@ await this.userName.fill('testemail1234@gmail.com');
 await this.userPassword.fill('Test@1234');
 await this.loginButton.click();
 await this.page.waitForLoadState('networkidle');
+await this.page.locator('.container').waitFor();
 }
 }
 module.exports={LoginPage};

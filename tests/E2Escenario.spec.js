@@ -1,28 +1,26 @@
 const { expect,test } = require("@playwright/test");
+const {LoginPage}=require('../PageObject/LoginPage')
+const {DashBoard}=require('../PageObject/DashBoard')
 
 test.only('new page automate',async ({page}) =>{
 
-await page.goto("https://rahulshettyacademy.com/client/");
-await page.locator('#userEmail').fill('testemail1234@gmail.com');
-await page.locator('#userPassword').fill('Test@1234');
-await page.locator('#login').click();
-//wating for API idel state
-await page.locator('.container').waitFor();
-const products=await page.locator('.container');
-const titleList=await products.locator('.card-body h5 b').allTextContents();
-console.log(titleList);
-for(let b=0;b<titleList.length;b++)
-{
-    if(titleList[b].includes('zara coat 3'))
-    {
-      await products.locator('.card-body .w-10').nth(b).click();
-    }
-    
-}
-//select cart
-await page.locator('.btn-custom .fa-shopping-cart').click();
+const loginOBJ=new LoginPage(page);
+
+
+
+
+const URL="https://rahulshettyacademy.com/client/";
+const UserName='testemail1234@gmail.com';
+const Password='Test@1234';
+await loginOBJ.goto(URL);
+await loginOBJ.performLogin(UserName,Password);
+
+const dashOBJ=new DashBoard(page);
+await dashOBJ.searchAndAddProduct();
+
 //cart products
 await page.locator('.cartWrap .ng-star-inserted').waitFor();
+
 await page.waitForLoadState('networkidle');
 const cartProduct=await page.locator('.cartWrap .ng-star-inserted');
 //asseerrt product
@@ -32,8 +30,11 @@ await cartProduct.locator('.btn-primary').click();
 await page.getByPlaceholder('Select Country').type('india',{delay:1000});
 const countryList=await page.locator('.mt-5  .ta-results .ta-item').allTextContents();
 console.log(countryList);
-for(let c=0;c<countryList.length;c++)
+for(let c=0;c<countryList.length;c++) 
 {
+  
+  
+  
     if(countryList[c].trim()==='India')
     {
         
@@ -67,6 +68,7 @@ for(let j=0;j<OrderIDs.length;j++)
     {
         orderStatus=true;
         console.log("order ids are "+OrderIDs[j]);
+        
     }
 }
 
