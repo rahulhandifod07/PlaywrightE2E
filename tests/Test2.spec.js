@@ -16,5 +16,6 @@ test.only('Launch Browser', async ({page})=>
 
     
         //cy.wait(1000)
+        console.log("hi");
     
 });
