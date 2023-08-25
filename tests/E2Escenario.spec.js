@@ -1,38 +1,37 @@
 const { expect,test } = require("@playwright/test");
-const {LoginPage}=require('../PageObject/LoginPage')
-const {DashBoard}=require('../PageObject/DashBoard')
-const {CartPage}=require('../PageObject/CartPage')
-const {PaymentPage}=require('../PageObject/PaymentPage')
-const {FinishPage}=require('../PageObject/FinishPage')
-const {OrderSummeryPage}=require('../PageObject/OrderSummeryPage')
+const {POManager}=require('../POManager/POManager');
+const Dataset=JSON.parse(JSON.stringify(require("../util/UserData.json")));
 
+for(const data of Dataset)
+{
+test.only(`new page automate ${data.productName}`, async ({page}) =>{
 
+const POManagerOBJ=new POManager(page);
+const loginOBJ=POManagerOBJ.getLoginPage();
 
-test.only('new page automate',async ({page}) =>{
+// const URL="https://rahulshettyacademy.com/client/";
+// const UserName='testemail1234@gmail.com';
+// const Password='Test@1234';
+await loginOBJ.goto(data.URL);
+await loginOBJ.performLogin(data.username,data.password);
 
-const loginOBJ=new LoginPage(page);
+const dashOBJ=POManagerOBJ.getDashBoardPage();
+await dashOBJ.searchAndAddProduct(data.productName);
 
-const URL="https://rahulshettyacademy.com/client/";
-const UserName='testemail1234@gmail.com';
-const Password='Test@1234';
-await loginOBJ.goto(URL);
-await loginOBJ.performLogin(UserName,Password);
+const cartOBJ=POManagerOBJ.getCartPage();
+const productList=await cartOBJ.BuyProduct(data.productName);
+await expect.soft(productList).toContain(data.productName);
 
-const dashOBJ=new DashBoard(page);
-await dashOBJ.searchAndAddProduct();
-
-const cartOBJ=new CartPage(page);
-await cartOBJ.BuyProduct(expect);
-
-const PaymentPageOBJ=new PaymentPage(page);
+const PaymentPageOBJ=POManagerOBJ.getPaymentPage();
 await PaymentPageOBJ.UserDetails();
 
-const FinishPageOBJ=new FinishPage(page);
+const FinishPageOBJ=POManagerOBJ.getFinishPage();
 const orderIDNo=await FinishPageOBJ.getOrderIDAndNavigateToOrderPage();
 
-const OrderSummeryPageOBJ=new OrderSummeryPage(page);
+const OrderSummeryPageOBJ=POManagerOBJ.getOrderSummeryPage();
 await OrderSummeryPageOBJ.validateOrderID(expect,orderIDNo);
 
 
-page.close();
-})
+await page.close();
+});
+}

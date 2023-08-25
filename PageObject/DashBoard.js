@@ -7,7 +7,7 @@ constructor(page)
     this.titleList=page.locator('.card-body h5 b');
 }
 
-async searchAndAddProduct()
+async searchAndAddProduct(productName)
 {
 
 const titles=await this.titleList.allTextContents();
@@ -15,7 +15,7 @@ await console.log("products aree "+titles);
 for(let b=0;b<titles.length;b++)
 {
   
-    if(titles[b].includes('zara coat 3'))
+    if(titles[b].includes(productName))
     {
       await this.products.locator('.card-body .w-10').nth(b).click();
       console.log(titles[b]);

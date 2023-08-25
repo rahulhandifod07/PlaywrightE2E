@@ -9,13 +9,11 @@ class CartPage
     }
 
      
-    async BuyProduct(expect)
+    async BuyProduct()
     {
         const productList=await this.productName.allTextContents();
-        await expect(productList).toContain('zara coat 3');
         await this.BuyNow.click();
-
-
+        return productList;
     }
 
 

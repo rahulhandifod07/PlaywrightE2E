@@ -15,8 +15,8 @@ async goto(url)
 
 async performLogin(userName,userPassword)
 {
-await this.userName.fill('testemail1234@gmail.com');
-await this.userPassword.fill('Test@1234');
+await this.userName.fill(userName);
+await this.userPassword.fill(userPassword);
 await this.loginButton.click();
 await this.page.waitForLoadState('networkidle');
 await this.page.locator('.container').waitFor();
